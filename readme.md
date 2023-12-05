@@ -1,17 +1,3 @@
-<div align=center>
-<img src="https://github.com/lllyasviel/Fooocus/assets/19834515/483fb86d-c9a2-4c20-997c-46dafc124f25">
-
-**Non-cherry-picked** random batch by just typing two words "forest elf", 
-
-without any parameter tweaking, without any strange prompt tags. 
-
-See also **non-cherry-picked** generalization and diversity tests [here](https://github.com/lllyasviel/Fooocus/discussions/808) and [here](https://github.com/lllyasviel/Fooocus/discussions/679) and [here](https://github.com/lllyasviel/Fooocus/discussions/679#realistic).
-
-In the entire open source community, only Fooocus can achieve this level of **non-cherry-picked** quality.
-
-</div>
-
-
 # Fooocus
 
 Fooocus is an image generating software (based on [Gradio](https://www.gradio.app/)).
@@ -22,207 +8,19 @@ Fooocus is a rethinking of Stable Diffusion and Midjourney’s designs:
 
 * Learned from Midjourney, the manual tweaking is not needed, and users only need to focus on the prompts and images.
 
-Fooocus has included and automated [lots of inner optimizations and quality improvements](#tech_list). Users can forget all those difficult technical parameters, and just enjoy the interaction between human and computer to "explore new mediums of thought and expanding the imaginative powers of the human species" `[1]`.
-
-Fooocus has simplified the installation. Between pressing "download" and generating the first image, the number of needed mouse clicks is strictly limited to less than 3. Minimal GPU memory requirement is 4GB (Nvidia).
-
-`[1]` David Holz, 2019.
-
-## [Installing Fooocus](#download)
-
-# Moving from Midjourney to Fooocus
-
-Using Fooocus is as easy as (probably easier than) Midjourney – but this does not mean we lack functionality. Below are the details.
-
-| Midjourney | Fooocus |
-| - | - |
-| High-quality text-to-image without needing much prompt engineering or parameter tuning. <br> (Unknown method) | High-quality text-to-image without needing much prompt engineering or parameter tuning. <br> (Fooocus has offline GPT-2 based prompt processing engine and lots of sampling improvements so that results are always beautiful, no matter your prompt is as short as “house in garden” or as long as 1000 words) |
-| V1 V2 V3 V4 | Input Image -> Upscale or Variation -> Vary (Subtle) / Vary (Strong)|
-| U1 U2 U3 U4 | Input Image -> Upscale or Variation -> Upscale (1.5x) / Upscale (2x) |
-| Inpaint / Up / Down / Left / Right (Pan) | Input Image -> Inpaint or Outpaint -> Inpaint / Up / Down / Left / Right <br> (Fooocus uses its own inpaint algorithm and inpaint models so that results are more satisfying than all other software that uses standard SDXL inpaint method/model) |
-| Image Prompt | Input Image -> Image Prompt <br> (Fooocus uses its own image prompt algorithm so that result quality and prompt understanding are more satisfying than all other software that uses standard SDXL methods like standard IP-Adapters or Revisions) |
-| --style | Advanced -> Style |
-| --stylize | Advanced -> Advanced -> Guidance |
-| --niji | [Multiple launchers: "run.bat", "run_anime.bat", and "run_realistic.bat".](https://github.com/lllyasviel/Fooocus/discussions/679) <br> Fooocus support SDXL models on Civitai <br> (You can google search “Civitai” if you do not know about it) |
-| --quality | Advanced -> Quality |
-| --repeat | Advanced -> Image Number |
-| Multi Prompts (::) | Just use multiple lines of prompts |
-| Prompt Weights | You can use " I am (happy:1.5)". <br> Fooocus uses A1111's reweighting algorithm so that results are better than ComfyUI if users directly copy prompts from Civitai. (Because if prompts are written in ComfyUI's reweighting, users are less likely to copy prompt texts as they prefer dragging files) <br> To use embedding, you can use "(embedding:file_name:1.1)" |
-| --no | Advanced -> Negative Prompt |
-| --ar | Advanced -> Aspect Ratios |
-| InsightFace | Input Image -> Image Prompt -> Advanced -> FaceSwap |
-
-We also have a few things borrowed from the best parts of LeonardoAI:
-
-| LeonardoAI | Fooocus |
-| - | - |
-| Prompt Magic | Advanced -> Style -> Fooocus V2 |
-| Advanced Sampler Parameters (like Contrast/Sharpness/etc) | Advanced -> Advanced -> Sampling Sharpness / etc |
-| User-friendly ControlNets | Input Image -> Image Prompt -> Advanced |
-
-Fooocus also developed many "fooocus-only" features for advanced users to get perfect results. [Click here to browse the advanced features.](https://github.com/lllyasviel/Fooocus/discussions/117)
-
-# Download
-
-### Windows
-
-You can directly download Fooocus with:
-
-**[>>> Click here to download <<<](https://github.com/lllyasviel/Fooocus/releases/download/release/Fooocus_win64_2-1-791.7z)**
-
-After you download the file, please uncompress it, and then run the "run.bat".
-
-![image](https://github.com/lllyasviel/Fooocus/assets/19834515/c49269c4-c274-4893-b368-047c401cc58c)
-
-In the first time you launch the software, it will automatically download models:
-
-1. It will download [default models](#models) to the folder "Fooocus\models\checkpoints" given different presets. You can download them in advance if you do not want automatic download.
-2. Note that if you use inpaint, at the first time you inpaint an image, it will download [Fooocus's own inpaint control model from here](https://huggingface.co/lllyasviel/fooocus_inpaint/resolve/main/inpaint_v26.fooocus.patch) as the file "Fooocus\models\inpaint\inpaint_v26.fooocus.patch" (the size of this file is 1.28GB).
-
-After Fooocus 2.1.60, you will also have `run_anime.bat` and `run_realistic.bat`. They are different model presets (and requires different models, but thet will be automatically downloaded). [Check here for more details](https://github.com/lllyasviel/Fooocus/discussions/679).
-
-![image](https://github.com/lllyasviel/Fooocus/assets/19834515/d386f817-4bd7-490c-ad89-c1e228c23447)
-
-If you already have these files, you can copy them to the above locations to speed up installation.
-
-Note that if you see **"MetadataIncompleteBuffer" or "PytorchStreamReader"**, then your model files are corrupted. Please download models again.
-
-Below is a test on a relatively low-end laptop with **16GB System RAM** and **6GB VRAM** (Nvidia 3060 laptop). The speed on this machine is about 1.35 seconds per iteration. Pretty impressive – nowadays laptops with 3060 are usually at very acceptable price.
-
-![image](https://github.com/lllyasviel/Fooocus/assets/19834515/938737a5-b105-4f19-b051-81356cb7c495)
-
-Besides, recently many other software report that Nvidia driver above 532 is sometimes 10x slower than Nvidia driver 531. If your generation time is very long, consider download [Nvidia Driver 531 Laptop](https://www.nvidia.com/download/driverResults.aspx/199991/en-us/) or [Nvidia Driver 531 Desktop](https://www.nvidia.com/download/driverResults.aspx/199990/en-us/).
-
-Note that the minimal requirement is **4GB Nvidia GPU memory (4GB VRAM)** and **8GB system memory (8GB RAM)**. This requires using Microsoft’s Virtual Swap technique, which is automatically enabled by your Windows installation in most cases, so you often do not need to do anything about it. However, if you are not sure, or if you manually turned it off (would anyone really do that?), or **if you see any "RuntimeError: CPUAllocator"**, you can enable it here:
-
-<details>
-<summary>Click here to the see the image instruction. </summary>
-
-![image](https://github.com/lllyasviel/Fooocus/assets/19834515/2a06b130-fe9b-4504-94f1-2763be4476e9)
-
-**And make sure that you have at least 40GB free space on each drive if you still see "RuntimeError: CPUAllocator" !**
-
-</details>
-
-Please open an issue if you use similar devices but still cannot achieve acceptable performances.
-
 ### Colab
 
 (Last tested - 2023 Nov 15)
 
 | Colab | Info
 | --- | --- |
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/lllyasviel/Fooocus/blob/main/fooocus_colab.ipynb) | Fooocus Official
+[![Open WebUI](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/NajmAjmal/Fooocus/blob/main/fooocus_colab.ipynb) | Fooocus Un-Official
 
 In Colab, you can modify the last line to `!python entry_with_update.py --share` or `!python entry_with_update.py --preset anime --share` or `!python entry_with_update.py --preset realistic --share` for Fooocus Default/Anime/Realistic Edition.
 
 Note that this Colab will disable refiner by default because Colab free's resource is relatively limited. 
 
 Thanks to [camenduru](https://github.com/camenduru)!
-
-### Linux (Using Anaconda)
-
-If you want to use Anaconda/Miniconda, you can
-
-    git clone https://github.com/lllyasviel/Fooocus.git
-    cd Fooocus
-    conda env create -f environment.yaml
-    conda activate fooocus
-    pip install -r requirements_versions.txt
-
-Then download the models: download [default models](#models) to the folder "Fooocus\models\checkpoints". **Or let Fooocus automatically download the models** using the launcher:
-
-    conda activate fooocus
-    python entry_with_update.py
-
-Or if you want to open a remote port, use
-
-    conda activate fooocus
-    python entry_with_update.py --listen
-
-Use `python entry_with_update.py --preset anime` or `python entry_with_update.py --preset realistic` for Fooocus Anime/Realistic Edition.
-
-### Linux (Using Python Venv)
-
-Your Linux needs to have **Python 3.10** installed, and lets say your Python can be called with command **python3** with your venv system working, you can
-
-    git clone https://github.com/lllyasviel/Fooocus.git
-    cd Fooocus
-    python3 -m venv fooocus_env
-    source fooocus_env/bin/activate
-    pip install -r requirements_versions.txt
-
-See the above sections for model downloads. You can launch the software with:
-
-    source fooocus_env/bin/activate
-    python entry_with_update.py
-
-Or if you want to open a remote port, use
-
-    source fooocus_env/bin/activate
-    python entry_with_update.py --listen
-
-Use `python entry_with_update.py --preset anime` or `python entry_with_update.py --preset realistic` for Fooocus Anime/Realistic Edition.
-
-### Linux (Using native system Python)
-
-If you know what you are doing, and your Linux already has **Python 3.10** installed, and your Python can be called with command **python3** (and Pip with **pip3**), you can
-
-    git clone https://github.com/lllyasviel/Fooocus.git
-    cd Fooocus
-    pip3 install -r requirements_versions.txt
-
-See the above sections for model downloads. You can launch the software with:
-
-    python3 entry_with_update.py
-
-Or if you want to open a remote port, use
-
-    python3 entry_with_update.py --listen
-
-Use `python entry_with_update.py --preset anime` or `python entry_with_update.py --preset realistic` for Fooocus Anime/Realistic Edition.
-
-### Linux (AMD GPUs)
-
-Same with the above instructions. You need to change torch to AMD version
-
-    pip uninstall torch torchvision torchaudio torchtext functorch xformers 
-    pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm5.6
-
-AMD is not intensively tested, however. The AMD support is in beta.
-
-Use `python entry_with_update.py --preset anime` or `python entry_with_update.py --preset realistic` for Fooocus Anime/Realistic Edition.
-
-### Windows(AMD GPUs)
-
-Same with Windows. Download the software, edit the content of `run.bat` as:
-
-    .\python_embeded\python.exe -m pip uninstall torch torchvision torchaudio torchtext functorch xformers -y
-    .\python_embeded\python.exe -m pip install torch-directml
-    .\python_embeded\python.exe -s Fooocus\entry_with_update.py --directml
-    pause
-
-Then run the `run.bat`.
-
-AMD is not intensively tested, however. The AMD support is in beta.
-
-Use `python entry_with_update.py --preset anime` or `python entry_with_update.py --preset realistic` for Fooocus Anime/Realistic Edition.
-
-### Mac
-
-Mac is not intensively tested. Below is an unofficial guideline for using Mac. You can discuss problems [here](https://github.com/lllyasviel/Fooocus/pull/129).
-
-You can install Fooocus on Apple Mac silicon (M1 or M2) with macOS 'Catalina' or a newer version. Fooocus runs on Apple silicon computers via [PyTorch](https://pytorch.org/get-started/locally/) MPS device acceleration. Mac Silicon computers don't come with a dedicated graphics card, resulting in significantly longer image processing times compared to computers with dedicated graphics cards.
-
-1. Install the conda package manager and pytorch nightly. Read the [Accelerated PyTorch training on Mac](https://developer.apple.com/metal/pytorch/) Apple Developer guide for instructions. Make sure pytorch recognizes your MPS device.
-1. Open the macOS Terminal app and clone this repository with `git clone https://github.com/lllyasviel/Fooocus.git`.
-1. Change to the new Fooocus directory, `cd Fooocus`.
-1. Create a new conda environment, `conda env create -f environment.yaml`.
-1. Activate your new conda environment, `conda activate fooocus`.
-1. Install the packages required by Fooocus, `pip install -r requirements_versions.txt`.
-1. Launch Fooocus by running `python entry_with_update.py`. (Some Mac M2 users may need `python entry_with_update.py --enable-smart-memory` to speed up model loading/unloading.) The first time you run Fooocus, it will automatically download the Stable Diffusion SDXL models and will take a significant time, depending on your internet connection.
-
-Use `python entry_with_update.py --preset anime` or `python entry_with_update.py --preset realistic` for Fooocus Anime/Realistic Edition.
 
 ## Default Models
 <a name="models"></a>
